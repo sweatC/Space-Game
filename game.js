@@ -16,7 +16,7 @@
 		var tick = function() {
 			//this.prototype.update();
 			//this.prototype.draw(screen, gameSize);
-			self.update();
+			self.update(gameSize);
 			self.draw(screen, gameSize);
 			requestAnimationFrame(tick);
 		}
@@ -27,7 +27,13 @@
 
 	Game.prototype = {
 		
-		 update : function() {
+		 update : function(gameSize) {
+		 	console.log(this.objects.length);
+		    for (var i = 0; i < this.objects.length; i++) {
+				if(this.objects[i].position.y < 0) {
+					this.objects.splice(i, 1);
+				}
+			}
 			for (var i = 0; i < this.objects.length; i++) {
 				this.objects[i].update();
 			}
@@ -48,7 +54,8 @@
 
 	var Player = function(game, gameSize) {
 		this.game = game;
-
+		this.bullets = 0;
+		this.timer = 0;
 		this.size = {
 			width: 16,
 			height : 16
@@ -69,10 +76,16 @@
 			if(this.keyboader.isDown(this.keyboader.KEYS.RIGHT))
 				this.position.x += 2;
 			if(this.keyboader.isDown(this.keyboader.KEYS.SPACE)) {
-				var bullet = new Bullet({x : this.position.x + this.size.width/2 - 3/2, y: this.position.y}, 
-					{x: 0, y: -6});
-				this.game.addObject(bullet);
+				if(this.bullets < 3) {
+					var bullet = new Bullet({x : this.position.x + this.size.width/2 - 3/2, y: this.position.y}, 
+						{x: 0, y: -6});
+					this.game.addObject(bullet);
+					this.bullets++;
+				}
 			}
+			this.timer++;
+			if(this.timer % 12 == 0)
+				this.bullets = 0;
 		}
 	}
 
