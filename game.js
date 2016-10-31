@@ -38,7 +38,11 @@
 			for (var i = 0; i < this.objects.length; i++) {
 				drawRect(screen, this.objects[i]);
 			}
-		} 
+		},
+
+		addObject : function(obj) {
+			this.objects.push(obj);
+		},
 	}
 
 
@@ -64,6 +68,29 @@
 				this.position.x -= 2;
 			if(this.keyboader.isDown(this.keyboader.KEYS.RIGHT))
 				this.position.x += 2;
+			if(this.keyboader.isDown(this.keyboader.KEYS.SPACE)) {
+				var bullet = new Bullet({x : this.position.x + this.size.width/2 - 3/2, y: this.position.y}, 
+					{x: 0, y: -6});
+				this.game.addObject(bullet);
+			}
+		}
+	}
+
+	var Bullet = function(position, velocity) {
+
+		this.size = {
+			width: 3,
+			height : 3
+		};
+
+		this.position = position;
+		this.velocity = velocity;
+	}
+
+	Bullet.prototype = {
+		update : function() {
+			this.position.x += this.velocity.x;
+			this.position.y += this.velocity.y; 
 		}
 	}
 
