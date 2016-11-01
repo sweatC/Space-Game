@@ -172,15 +172,7 @@
 	var clearCanvas = function(screen, gameSize) {
 		screen.clearRect(0, 0, gameSize.x, gameSize.y);
 	}
-
-	var inTarget = function(obj, gameSize) {
-		if(obj.position.x < gameSize.x) {
-			obj.position.x += 2;
-		}
-		else if(obj.position.x > gameSize.x) {
-			obj.position.x -= 2;
-		}
-	}
+	
 	var createInvaders = function(game){
 		var invaders = [];
 		for (var i = 0; i < 24; i++) {
