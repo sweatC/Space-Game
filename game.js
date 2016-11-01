@@ -8,9 +8,9 @@
 			x : canvas.width,
 			y : canvas.height
 		};
+
 		// all objects
-		this.objects = [new Player(this, gameSize)];
-		
+		this.objects = createInvaders(this).concat([new Player(this, gameSize)]);
 		var self = this;
 
 		var tick = function() {
@@ -49,11 +49,27 @@
 		addObject : function(obj) {
 			this.objects.push(obj);
 		},
-
-
 	}
 
 
+	var Invader = function(game, position) {
+		this.game = game;
+		this.size = {width:16, height: 16};
+		this.position  = position;
+		this.patrolX = 0;
+		this.speedX = 3;
+	}
+
+	Invader.prototype = {
+		update : function() {
+			if(this.patrolX < 0 || this.patrolX > 530) {
+				this.speedX = -(this.speedX);
+			}
+
+			this.position.x += this.speedX;
+			this.patrolX += this.speedX;
+		}
+	}
 	var Player = function(game, gameSize) {
 		this.game = game;
 		this.bullets = 0;
@@ -164,6 +180,15 @@
 		else if(obj.position.x > gameSize.x) {
 			obj.position.x -= 2;
 		}
+	}
+	var createInvaders = function(game){
+		var invaders = [];
+		for (var i = 0; i < 24; i++) {
+			var x = 30 + (i%8) * 30;
+			var y = 30 + (i%3) * 30;
+			invaders.push(new Invader(game, {x: x, y: y}));
+		}
+		return invaders;
 	}
 
 	window.onload = function() {
