@@ -49,6 +49,8 @@
 		addObject : function(obj) {
 			this.objects.push(obj);
 		},
+
+
 	}
 
 
@@ -60,21 +62,31 @@
 			width: 16,
 			height : 16
 		};
+		this.gameSize = gameSize;
 
 		this.position = {
 			x : gameSize.x/2 - this.size.width/2,
 			y : gameSize.y/2 - this.size.height/2
 		};
-
 		this.keyboader = new Keyboarder();
 	}
 
 	Player.prototype = {
 		update : function() {
-			if(this.keyboader.isDown(this.keyboader.KEYS.LEFT))
-				this.position.x -= 2;
-			if(this.keyboader.isDown(this.keyboader.KEYS.RIGHT))
-				this.position.x += 2;
+			if(this.keyboader.isDown(this.keyboader.KEYS.LEFT)){
+				if(this.inTarget(this, this.gameSize) || (this.position.x + this.size.width) >= this.gameSize.x)
+					this.position.x -= 2;
+				
+				this.position.x -= 0;
+				
+			}
+			if(this.keyboader.isDown(this.keyboader.KEYS.RIGHT)){
+				if(this.inTarget(this, this.gameSize) || this.position.x <= 0)
+					this.position.x += 2;
+				
+				this.position.x += 0;
+				
+			}
 			if(this.keyboader.isDown(this.keyboader.KEYS.SPACE)) {
 				if(this.bullets < 3) {
 					var bullet = new Bullet({x : this.position.x + this.size.width/2 - 3/2, y: this.position.y}, 
@@ -86,6 +98,15 @@
 			this.timer++;
 			if(this.timer % 12 == 0)
 				this.bullets = 0;
+		},
+
+	    inTarget : function(player, gameSize) {
+			if((player.position.x + player.size.width) >= gameSize.x)
+				return false;
+			
+			else if(player.position.x <= 0) return false;
+			
+			else return true;
 		}
 	}
 
@@ -134,6 +155,15 @@
 
 	var clearCanvas = function(screen, gameSize) {
 		screen.clearRect(0, 0, gameSize.x, gameSize.y);
+	}
+
+	var inTarget = function(obj, gameSize) {
+		if(obj.position.x < gameSize.x) {
+			obj.position.x += 2;
+		}
+		else if(obj.position.x > gameSize.x) {
+			obj.position.x -= 2;
+		}
 	}
 
 	window.onload = function() {
