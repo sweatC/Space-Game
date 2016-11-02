@@ -28,7 +28,15 @@
 	Game.prototype = {
 		
 		 update : function(gameSize) {
-		 	console.log(this.objects.length);
+		 	var objects = this.objects;
+
+		 	var notCollidingWithAnything  = function(o1) {
+		 		return objects.filter(function(o2) {
+		 			return colliding(o1, o2);
+		 		}).length == 0;
+		 	}
+
+		 	this.objects = this.objects.filter(notCollidingWithAnything);
 		    for (var i = 0; i < this.objects.length; i++) {
 				if(this.objects[i].position.y < 0) {
 					this.objects.splice(i, 1);
@@ -105,7 +113,7 @@
 			}
 			if(this.keyboader.isDown(this.keyboader.KEYS.SPACE)) {
 				if(this.bullets < 3) {
-					var bullet = new Bullet({x : this.position.x + this.size.width/2 - 3/2, y: this.position.y}, 
+					var bullet = new Bullet({x : this.position.x + this.size.width/2 - 3/2, y: this.position.y-4}, 
 						{x: 0, y: -6});
 					this.game.addObject(bullet);
 					this.bullets++;
@@ -165,6 +173,17 @@
 		}
 	}
 	
+	// when two objects 
+	var colliding = function(o1, o2) {
+		return !(o1 == o2 ||
+			o1.position.x + o1.size.width/2 < o2.position.x - o2.size.width/2 ||
+			o1.position.y + o1.size.height/2 < o2.position.y - o2.size.height/2 ||
+			o1.position.x - o1.size.width/2 > o2.position.x + o2.size.width/2 ||
+			o1.position.y - o1.size.height/2 > o2.position.y + o2.size.height/2
+			);
+	}
+
+
 	var drawRect = function(screen, object) {
 		screen.fillRect(object.position.x, object.position.y, object.size.width, object.size.height);
 	}
