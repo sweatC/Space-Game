@@ -103,7 +103,7 @@
 	Player.prototype = {
 		update : function() {
 			if(this.keyboader.isDown( this.keyboader.KEYS.LEFT )) {
-				if(this.inTarget(this, this.gameSize) || (this.position.x + this.size.width) >= this.gameSize.x)
+				if(this.inTargetX(this, this.gameSize) || (this.position.x + this.size.width) >= this.gameSize.x)
 					this.position.x -= 2;
 				
 				this.position.x -= 0;
@@ -111,7 +111,7 @@
 			}
 
 			if(this.keyboader.isDown( this.keyboader.KEYS.RIGHT )) {
-				if(this.inTarget(this, this.gameSize) || this.position.x <= 0)
+				if(this.inTargetX(this, this.gameSize) || this.position.x <= 0)
 					this.position.x += 2;
 				
 				this.position.x += 0;
@@ -119,11 +119,17 @@
 			}
 
 			if(this.keyboader.isDown( this.keyboader.KEYS.DOWN )) {
-				this.position.y += 2;
+				if(this.inTargetY(this, this.gameSize) || this.position.y <= 100)
+					this.position.y += 2;
+
+				this.position.y += 0;
 			}
 
 			if(this.keyboader.isDown( this.keyboader.KEYS.UP )) {
-				this.position.y -= 2;
+				if(this.inTargetY(this, this.gameSize) || (this.position.y + this.size.height) >= this.gameSize.y)
+					this.position.y -= 2;
+
+				this.position.y -= 0;
 			}
 
 
@@ -141,14 +147,21 @@
 				this.bullets = 0;
 		},
 
-	    inTarget : function(player, gameSize) {
-			if((player.position.x + player.size.width) >= gameSize.x)
+	    inTargetX : function(player, gameSize) {
+			if((player.position.x + player.size.width) >= gameSize.x 
+				|| player.position.x <= 0)
 				return false;
-			
-			else if(player.position.x <= 0) return false;
 			
 			else return true;
 		},
+
+		inTargetY : function(player, gameSize) {
+			if((player.position.y + player.size.height) >= gameSize.y 
+				|| player.position.y <= 100) 
+		  		return false;
+
+		  	else return true;
+		}
 	}
 
 	var Bullet = function(position, velocity) {
