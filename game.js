@@ -118,6 +118,15 @@
 				
 			}
 
+			if(this.keyboader.isDown( this.keyboader.KEYS.DOWN )) {
+				this.position.y += 2;
+			}
+
+			if(this.keyboader.isDown( this.keyboader.KEYS.UP )) {
+				this.position.y -= 2;
+			}
+
+
 			if(this.keyboader.isDown( this.keyboader.KEYS.SPACE )) {
 				if(this.bullets < 3) {
 					var bullet = new Bullet( { x : this.position.x + this.size.width/2 - 3/2, y : this.position.y-4}, 
@@ -177,6 +186,8 @@
 		this.KEYS = {
 			LEFT : 37,
 			RIGHT : 39,
+			DOWN : 40,
+			UP : 38,
 			SPACE : 32
 		}
 	}
