@@ -1,4 +1,4 @@
-(function() {
++function() {
 	
 	var Game = function(canvasId) {
 		var canvas = document.getElementById( canvasId );
@@ -238,4 +238,4 @@
 		new Game( 'screen' );
 	}
 
-})();
+}();
