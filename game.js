@@ -59,6 +59,14 @@
 		addObject : function(obj) {
 			this.objects.push( obj );
 		},
+
+		invadersBelow : function(invader) {
+			return this.objects.filter(function(o) {
+				return o instanceof Invader &&
+				o.position.y > invader.position.y &&
+				o.position.x - invader.position.x < invader.size.width;
+			}).length > 0;
+		},
 	}
 
 
@@ -78,6 +86,13 @@
 
 			this.position.x += this.speedX;
 			this.patrolX += this.speedX;
+			//count of bullets
+			if(Math.random() < 0.05 && !this.game.invadersBelow(this)) {
+				var bullet = new Bullet( { x : this.position.x + this.size.width/2 - 3/2, y : this.position.y+this.size.height/2}, 
+						{x: Math.random() - 0.5, y: 2} );
+				
+				this.game.addObject( bullet );
+			}
 		}
 	}
 
