@@ -90,8 +90,8 @@
 			this.position.x += this.speedX;
 			this.patrolX += this.speedX;
 			//count of bullets
-			if(Math.random() < 0.05 && !this.game.invadersBelow(this)) {
-				var bullet = new Bullet( { x : this.position.x + this.size.width/2 - 3/2, y : this.position.y+this.size.height/2}, 
+			if(Math.random() < 0.01 && !this.game.invadersBelow(this)) {
+				var bullet = new Bullet( { x : this.position.x + this.size.width/2 - 3/2, y : this.position.y + this.size.height/2}, 
 						{x: Math.random() - 0.5, y: 2} );
 				
 				this.game.addObject( bullet );
